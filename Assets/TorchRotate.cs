@@ -19,8 +19,9 @@ public class TorchRotate : MonoBehaviour
         
     }
 
-    public void LookAtMouse(float angle)
+    public void MoveToMouse(Vector2 position, float angle)
     {
+        transform.position = position;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle + angleOffset));
     }
 }
