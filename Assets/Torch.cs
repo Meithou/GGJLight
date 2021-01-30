@@ -24,7 +24,7 @@ public class Torch : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (player.holdingTorch)
         {
@@ -35,7 +35,6 @@ public class Torch : MonoBehaviour
         {
             spotlight.GetComponent<BoxCollider2D>().enabled = true;
         }
-        Debug.Log("spotlight enabled " + spotlight.GetComponent<BoxCollider2D>().enabled);
     }
 
     private void moveTorch()

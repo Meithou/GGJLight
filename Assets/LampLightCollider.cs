@@ -15,24 +15,36 @@ public class LampLightCollider : MonoBehaviour
     {
         
     }
+
     void OnTriggerEnter2D(Collider2D other){
         
-        if(other.gameObject.CompareTag("DeadByLight")){
-            Color target = other.gameObject.GetComponent<SpriteRenderer>().color;
-        
+        if(other.gameObject.tag.Contains("DeadByLight")){
+            Debug.Log("OnTrigger2DSTAY");
+            //Color target = other.gameObject.GetComponent<SpriteRenderer>().color;
             //other.gameObject.GetComponent<SpriteRenderer>().color = new Color (target.r,target.g,target.b,0.20f);
-           // other.gameObject.GetComponent<ShadowCaster2D>().castsShadows = false;
+            other.gameObject.GetComponent<BoxCollider2D>().isTrigger=true;
         }
-        
+        if(other.gameObject.tag.Contains("AliveByLight")){
+            //Color target = other.gameObject.GetComponent<SpriteRenderer>().color;
+            //other.gameObject.GetComponent<SpriteRenderer>().color = new Color (target.r,target.g,target.b,0.20f);
+            other.gameObject.GetComponent<BoxCollider2D>().isTrigger=false;
+        }
 
     }
     void OnTriggerExit2D(Collider2D other){
         
-        if(other.gameObject.CompareTag("DeadByLight")){
-            Color target = other.gameObject.GetComponent<SpriteRenderer>().color;
-            target.a = 1f;
+        if(other.gameObject.tag.Contains("DeadByLight")){
+            
+            Debug.Log("OnTriggerEXIT");
+            //Color target = other.gameObject.GetComponent<SpriteRenderer>().color;
+            //target.a = 1f;
             //other.gameObject.GetComponent<SpriteRenderer>().color = target;
+            other.gameObject.GetComponent<BoxCollider2D>().isTrigger=false;
         }
-
+        if(other.gameObject.tag.Contains("AliveByLight")){
+            //Color target = other.gameObject.GetComponent<SpriteRenderer>().color;
+            //other.gameObject.GetComponent<SpriteRenderer>().color = new Color (target.r,target.g,target.b,0.20f);
+            other.gameObject.GetComponent<BoxCollider2D>().isTrigger=true;
+        }
     }
 }
