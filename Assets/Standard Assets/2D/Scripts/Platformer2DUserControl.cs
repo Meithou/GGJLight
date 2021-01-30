@@ -19,18 +19,16 @@ namespace UnityStandardAssets._2D
         }
 
 
-        private void Update()
-        {
-            if (!m_Jump)
+private void Update(){
+    if (!m_Jump)
             {
                 // Read the jump input in Update so button presses aren't missed.
                 m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
             }
-        }
-
-
+}
         private void FixedUpdate()
         {
+            
             // Read the inputs.
             bool crouch = Input.GetKey(KeyCode.LeftControl);
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
@@ -45,7 +43,7 @@ namespace UnityStandardAssets._2D
             }
 
             // Drop the torch
-            if (Input.GetButton("Drop/PickUp"))
+            if (Input.GetButtonDown("Drop/PickUp"))
             {
                 if (holdingTorch)
                 {
@@ -56,8 +54,7 @@ namespace UnityStandardAssets._2D
         }
 
         private void OnTriggerStay2D ( Collider2D touching ){
-            if((this.gameObject.tag.Contains("Player")) && (touching.gameObject.tag.Contains("drag"))){
-                Debug.Log(touching.gameObject.name+ "Triggered");
+            if( (touching.gameObject.tag.Contains("drag"))){
                 if (Input.GetButton("Interact") && (!this.holding)) {
                     Debug.Log("Interact");
                     this.holding=true;

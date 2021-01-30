@@ -15,8 +15,24 @@ public class LampLightCollider : MonoBehaviour
     {
         
     }
+ IEnumerator ExecuteAfterTime(float time,Collider2D other)
+ {
+     yield return new WaitForSeconds(time);
+ 
+     // Code to execute after the delay
+     other.gameObject.GetComponent<BoxCollider2D>().isTrigger=false;
+ }
 
     void OnTriggerEnter2D(Collider2D other){
+        
+        if(other.gameObject.tag.Contains("AliveByLight")){
+            //Color target = other.gameObject.GetComponent<SpriteRenderer>().color;
+            //other.gameObject.GetComponent<SpriteRenderer>().color = new Color (target.r,target.g,target.b,0.20f);
+            StartCoroutine(ExecuteAfterTime(0.3f,other));
+        }
+
+    }
+    void OnTriggerStay2D(Collider2D other){
         
         if(other.gameObject.tag.Contains("DeadByLight")){
             Debug.Log("OnTrigger2DSTAY");
@@ -24,12 +40,6 @@ public class LampLightCollider : MonoBehaviour
             //other.gameObject.GetComponent<SpriteRenderer>().color = new Color (target.r,target.g,target.b,0.20f);
             other.gameObject.GetComponent<BoxCollider2D>().isTrigger=true;
         }
-        if(other.gameObject.tag.Contains("AliveByLight")){
-            //Color target = other.gameObject.GetComponent<SpriteRenderer>().color;
-            //other.gameObject.GetComponent<SpriteRenderer>().color = new Color (target.r,target.g,target.b,0.20f);
-            other.gameObject.GetComponent<BoxCollider2D>().isTrigger=false;
-        }
-
     }
     void OnTriggerExit2D(Collider2D other){
         
@@ -39,7 +49,7 @@ public class LampLightCollider : MonoBehaviour
             //Color target = other.gameObject.GetComponent<SpriteRenderer>().color;
             //target.a = 1f;
             //other.gameObject.GetComponent<SpriteRenderer>().color = target;
-            other.gameObject.GetComponent<BoxCollider2D>().isTrigger=false;
+            StartCoroutine(ExecuteAfterTime(0.3f,other));
         }
         if(other.gameObject.tag.Contains("AliveByLight")){
             //Color target = other.gameObject.GetComponent<SpriteRenderer>().color;

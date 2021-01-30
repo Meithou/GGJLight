@@ -9,35 +9,41 @@ using UnityStandardAssets._2D;
 public class Torch : MonoBehaviour
 {
 
-    private Camera cam;
-    private TorchRotate spotlight;
-    private Platformer2DUserControl player;
-    private float armLength = 1.0f;
-
+    public Camera cam;
+    public TorchRotate spotlight;
+    public Platformer2DUserControl player;
+    public float armLength = 0.6f;
+    private float futureAngle;
+    private Vector2 futurePosition;
     // Start is called before the first frame update
     void Start()
     {
-        cam = GetComponent<Camera>();
-        spotlight = GameObject.Find("Torch").GetComponent<TorchRotate>();
-        player = GameObject.Find("CharacterRobotBoy (1)").GetComponent<Platformer2DUserControl>();
-        Debug.Log("spotlight START enabled " + spotlight.GetComponent<BoxCollider2D>().enabled);
+
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if (player.holdingTorch)
         {
-            spotlight.GetComponent<BoxCollider2D>().enabled = false;
-            moveTorch();
+            
         }
-        else
+
+    }
+    void FixedUpdate(){
+        if (player.holdingTorch)
+        {
+            StartCoroutine(MoveTorch());
+            spotlight.GetComponent<BoxCollider2D>().enabled = false;
+            
+            spotlight.MoveToMouse(futurePosition, futureAngle);
+        }
+                else
         {
             spotlight.GetComponent<BoxCollider2D>().enabled = true;
         }
     }
-
-    private void moveTorch()
+     IEnumerator MoveTorch()
     {
         Vector2 positionOnScreen = cam.WorldToViewportPoint(player.transform.position);
 
@@ -46,11 +52,11 @@ public class Torch : MonoBehaviour
 
         //Get position between character and mouse
         Vector2 arm = (mouseOnScreen - positionOnScreen).normalized * armLength;
-        Vector2 position = new Vector2(player.transform.position.x, player.transform.position.y) + arm;
-
+        futurePosition = new Vector2(player.transform.position.x, player.transform.position.y) + arm;
         //Get the angle between the character and mouse
-        float angle = AngleBetweenTwoPoints(positionOnScreen, mouseOnScreen);
-        spotlight.MoveToMouse(position, angle);
+         futureAngle = AngleBetweenTwoPoints(positionOnScreen, mouseOnScreen);
+        spotlight.MoveToMouse(futurePosition, futureAngle);
+         yield return null;
     }
 
     private float AngleBetweenTwoPoints(Vector3 a, Vector3 b)
