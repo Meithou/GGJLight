@@ -4,8 +4,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.UIElements;
-using UnityStandardAssets._2D;
-
+using UnityStandardAssets;
 public class Torch : MonoBehaviour
 {
 
@@ -14,18 +13,29 @@ public class Torch : MonoBehaviour
     private PlatformerCharacter2D player;
     public float armLength = 1.0f;
 
+
     // Start is called before the first frame update
     void Start()
     {
         cam = GetComponent<Camera>();
-        spotlight = GameObject.Find("Point Light 2D (1)").GetComponent<TorchRotate>();
-        player = GameObject.Find("CharacterRobotBoy (1)").GetComponent<PlatformerCharacter2D>();
+        spotlight = GameObject.Find("Torch").GetComponent<TorchRotate>();
+        player = GameObject.Find("CharacterRobotBoy (1)").GetComponent<Platformer2DUserControl>();
+        Debug.Log("spotlight START enabled " + spotlight.GetComponent<BoxCollider2D>().enabled);
     }
 
     // Update is called once per frame
     void Update()
     {
-        moveTorch();
+        if (player.holdingTorch)
+        {
+            spotlight.GetComponent<BoxCollider2D>().enabled = false;
+            moveTorch();
+        }
+        else
+        {
+            spotlight.GetComponent<BoxCollider2D>().enabled = true;
+        }
+        Debug.Log("spotlight enabled " + spotlight.GetComponent<BoxCollider2D>().enabled);
     }
 
     private void moveTorch()
