@@ -9,7 +9,7 @@ namespace UnityStandardAssets._2D
     {
         private PlatformerCharacter2D m_Character;
         private bool m_Jump;
-
+        public bool holding = false;
 
         private void Awake()
         {
@@ -35,17 +35,20 @@ namespace UnityStandardAssets._2D
             // Pass all parameters to the character control script.
             m_Character.Move(h, crouch, m_Jump);
             m_Jump = false;
-            if (Input.GetButtonUp("Interact")){
+            if (!Input.GetButton("Interact")){
                 Destroy(this.GetComponent<FixedJoint2D>());
+                this.holding=false;
             }
         }
 
         private void OnTriggerStay2D ( Collider2D touching ){
-            if(touching.gameObject.tag.Contains("drag")){
+            if((this.gameObject.tag.Contains("Player")) && (touching.gameObject.tag.Contains("drag"))){
                 Debug.Log(touching.gameObject.name+ "Triggered");
-                if (Input.GetButtonDown("Interact")){
+                if (Input.GetButton("Interact") && (!this.holding)) {
+                    Debug.Log("Interact");
+                    this.holding=true;
                     this.gameObject.AddComponent<FixedJoint2D>();
-                    this.GetComponent<FixedJoint2D>().connectedBody = touching.gameObject.GetComponent<Rigidbody2D>();
+                    this.GetComponent<FixedJoint2D>().connectedBody = touching.gameObject.transform.parent.gameObject.GetComponent<Rigidbody2D>();
                 }
             }
         }
