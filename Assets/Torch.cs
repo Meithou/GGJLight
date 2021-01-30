@@ -11,21 +11,31 @@ public class Torch : MonoBehaviour
 
     private Camera cam;
     private TorchRotate spotlight;
-    private PlatformerCharacter2D player;
+    private Platformer2DUserControl player;
     private float armLength = 1.0f;
 
     // Start is called before the first frame update
     void Start()
     {
         cam = GetComponent<Camera>();
-        spotlight = GameObject.Find("Point Light 2D (1)").GetComponent<TorchRotate>();
-        player = GameObject.Find("CharacterRobotBoy (1)").GetComponent<PlatformerCharacter2D>();
+        spotlight = GameObject.Find("Torch").GetComponent<TorchRotate>();
+        player = GameObject.Find("CharacterRobotBoy (1)").GetComponent<Platformer2DUserControl>();
+        Debug.Log("spotlight START enabled " + spotlight.GetComponent<BoxCollider2D>().enabled);
     }
 
     // Update is called once per frame
     void Update()
     {
-        moveTorch();
+        if (player.holdingTorch)
+        {
+            spotlight.GetComponent<BoxCollider2D>().enabled = false;
+            moveTorch();
+        }
+        else
+        {
+            spotlight.GetComponent<BoxCollider2D>().enabled = true;
+        }
+        Debug.Log("spotlight enabled " + spotlight.GetComponent<BoxCollider2D>().enabled);
     }
 
     private void moveTorch()
@@ -37,7 +47,6 @@ public class Torch : MonoBehaviour
 
         //Get position between character and mouse
         Vector2 arm = (mouseOnScreen - positionOnScreen).normalized * armLength;
-        Debug.Log("arm x " + arm.x + " ,arm y " + arm.y);
         Vector2 position = new Vector2(player.transform.position.x, player.transform.position.y) + arm;
 
         //Get the angle between the character and mouse
