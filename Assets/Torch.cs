@@ -12,7 +12,7 @@ public class Torch : MonoBehaviour
     private Camera cam;
     private TorchRotate spotlight;
     private PlatformerCharacter2D player;
-    private float armLength = 1.0f;
+    public float armLength = 1.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +37,6 @@ public class Torch : MonoBehaviour
 
         //Get position between character and mouse
         Vector2 arm = (mouseOnScreen - positionOnScreen).normalized * armLength;
-        Debug.Log("arm x " + arm.x + " ,arm y " + arm.y);
         Vector2 position = new Vector2(player.transform.position.x, player.transform.position.y) + arm;
 
         //Get the angle between the character and mouse
