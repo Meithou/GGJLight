@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 using UnityStandardAssets.CrossPlatformInput;
 
 namespace UnityStandardAssets._2D
@@ -10,6 +11,7 @@ namespace UnityStandardAssets._2D
         private PlatformerCharacter2D m_Character;
         private bool m_Jump;
         public bool holding = false;
+        public bool holdingTorch = true;
 
         private void Awake()
         {
@@ -35,9 +37,21 @@ namespace UnityStandardAssets._2D
             // Pass all parameters to the character control script.
             m_Character.Move(h, crouch, m_Jump);
             m_Jump = false;
+
+            // Stop grabbing
             if (!Input.GetButton("Interact")){
                 Destroy(this.GetComponent<FixedJoint2D>());
                 this.holding=false;
+            }
+
+            // Drop the torch
+            if (Input.GetButton("Drop/PickUp"))
+            {
+                if (holdingTorch)
+                {
+                    Debug.Log("Drop");
+                    holdingTorch = false;
+                }
             }
         }
 
@@ -49,6 +63,16 @@ namespace UnityStandardAssets._2D
                     this.holding=true;
                     this.gameObject.AddComponent<FixedJoint2D>();
                     this.GetComponent<FixedJoint2D>().connectedBody = touching.gameObject.transform.parent.gameObject.GetComponent<Rigidbody2D>();
+                }
+            }
+           
+            if ((this.gameObject.tag.Contains("Player")) && (touching.gameObject.tag.Contains("Torch")))
+            {
+                //Debug.Log(touching.gameObject.name + "Triggered");
+                if (Input.GetButton("Drop/PickUp") && (!this.holdingTorch))
+                {
+                    Debug.Log("PickUp");
+                    this.holdingTorch = true;
                 }
             }
         }

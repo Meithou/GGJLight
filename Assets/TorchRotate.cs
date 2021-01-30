@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class TorchRotate : MonoBehaviour
 {
-    private float angleOffset = 85f;
+    private float angleOffset = 165f;
 
     // Start is called before the first frame update
     void Start()
