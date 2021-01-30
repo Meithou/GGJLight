@@ -20,7 +20,7 @@ public class LampLightCollider : MonoBehaviour
         if(other.gameObject.CompareTag("DeadByLight")){
             Color target = other.gameObject.GetComponent<SpriteRenderer>().color;
         
-           // other.gameObject.GetComponent<SpriteRenderer>().color = new Color (target.r,target.g,target.b,0.20f);
+            //other.gameObject.GetComponent<SpriteRenderer>().color = new Color (target.r,target.g,target.b,0.20f);
            // other.gameObject.GetComponent<ShadowCaster2D>().castsShadows = false;
         }
         

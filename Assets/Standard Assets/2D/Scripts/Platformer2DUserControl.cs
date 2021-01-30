@@ -35,6 +35,19 @@ namespace UnityStandardAssets._2D
             // Pass all parameters to the character control script.
             m_Character.Move(h, crouch, m_Jump);
             m_Jump = false;
+            if (Input.GetButtonUp("Interact")){
+                Destroy(this.GetComponent<FixedJoint2D>());
+            }
+        }
+
+        private void OnTriggerStay2D ( Collider2D touching ){
+            if(touching.gameObject.tag.Contains("drag")){
+                Debug.Log(touching.gameObject.name+ "Triggered");
+                if (Input.GetButtonDown("Interact")){
+                    this.gameObject.AddComponent<FixedJoint2D>();
+                    this.GetComponent<FixedJoint2D>().connectedBody = touching.gameObject.GetComponent<Rigidbody2D>();
+                }
+            }
         }
     }
 }
