@@ -8,6 +8,8 @@ TagManager:
   - lamplight
   - DeadByLight
   - drag
+  - light
+  - AliveByLight
   layers:
   - Default
   - TransparentFX
